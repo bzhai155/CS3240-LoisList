@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    {% if popup == 1 %}
+        <h4>
+            Invalid Class Addition: Time Conflict
+        </h4>
+    {% endif %}
+    {% if popup == 2 %}
+        <h4>
+            Invalid Class Addition: Same Course, Different Section
+        </h4>
+    {% endif %}
+    {% if popup == 3 %}
+        <h4>
+            Invalid Class Addition: Course Already Added
+        </h4>
+    {% endif %}
+    {% for class in cart %}
+        <h4> {{ class.subject }} {{ class.catalog_number }} {{ class.description }}</h4>
+        <h6 style="color:orange"> Instructor: {{ class.instructor_name}} ({{ class.instructor_email }})</h6>
+        <p style="color:blue;font-size:15px">|
+        {{ class.units }} Units |
+        Enrollment: {{class.enrollment_total}} / {{ class.class_capacity }} |
+        Wait List: {{ class.wait_list }} / {{ class.wait_cap }} |
+        {{ class.days}} {{class.start_time}}-{{class.end_time}} |
+        {{ class.facility_description }} |</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary" name="Schedule:{{class.course_number}}"> Add to Schedule </button>
+                <button type="submit" class="btn btn-primary" name="Remove:{{class.course_number}}"> Remove from Cart </button>
+            </form>
+        {% empty %}
+        <div class="alert alert-danger" role="alert">
+        Shopping Cart is Empty
+    {% endfor %}
+{% else %}
+    <h1> Please sign in to use this feature </h1>
+{% endif %}
+
+{% endblock content %}

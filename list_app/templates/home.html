@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+	 body {
+        background-image: url(https://news.virginia.edu/sites/default/files/uva_flag_0.jpg);
+	no-repeat center center fixed;
+	background-size: 95%;
+    }
+</style>
+
+
+{% comment %}
+<style>
+html { 
+  background: url(https://news.virginia.edu/sites/default/files/uva_flag_0.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+</style>
+{% endcomment %}
+
+<h1 class="display-3"> <font color="white"> Welcome to Lou's List </font> </h1>
+<br/>
+<a class="deptlist-link" href="/luthers/"> <h2> <font color="white"> Department List</font> </h2> </a>
+{% comment %}<input type="text", value= "{{ user.socialaccount_set.all.0.extra_data.name }}", name="Wholename", id = "{{ user.socialaccount_set.all.0.extra_data.name }}">
+#<input type="text", value= "{{ user.socialaccount_set.all.0.uid }}", name="UID", id = "{{ user.socialaccount_set.all.0.extra_data.name }}">
+{% endcomment %}
+{% if user.is_superuser %}
+        <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary"> Update </button>
+        </form>
+{% endif %}
+<br/>
+
+{% comment %} {% if user.is_authenticated %}
+       <p>Welcome, {{ user.username }} !</p>
+       <a target="_black" href="admin">admin</a>
+       <a href="{% url 'logout' %}">Logout</a>
+        {% endif %} {% endcomment %}
+
+    
+{% endblock content %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% if user.is_authenticated %}
+    {% if ownpage %}
+        <h1><nobr>
+            Welcome to {{username}}'s page 
+            <a href='/luthers/Calender/'>
+            <button type="submit" class="btn btn-primary" name="Edit calendar"> Edit Calendar </button>
+            </a>
+        </nobr></h1> 
+    {% else %}
+        {% if isfriend %}
+            <form method="post">
+                <h1><nobr>
+                    Welcome to {{username}}'s page 
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary" name="Remove Friend"> Remove Friend </button>
+                </nobr></h1> 
+                {% comment "add something ehre for nmo calss times" %}
+                    <a href="{{ request.get_full_path }}">Reload after clicking button to view new information</a>
+                {% endcomment %}
+            </form>
+        {% else %}
+            <form method="post">
+                <h1><nobr>
+                    Welcome to {{username}}'s page 
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary" name="Add Friend"> Add Friend </button>
+                </nobr></h1> 
+                <a href="{{ request.get_full_path }}">Reload after clicking button to view new information</a>
+            </form>
+        {% endif %}
+    {% endif %}
+
+ <div class="container">
+                <div class="timetable-img text-center">
+                    <img src="img/content/timetable.png" alt="">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr class="bg-light-gray">
+                                <th class="text-uppercase">Monday</th>
+                                <th class="text-uppercase">Tuesday</th>
+                                <th class="text-uppercase">Wednesday</th>
+                                <th class="text-uppercase">Thursday</th>
+                                <th class="text-uppercase">Friday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              
+            <td>
+                {% for c in mond %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for c in tues %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for c in wend %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for c in thur %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for c in frid %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+  
+    {% if ownpage %}
+            <h2><nobr>
+                Comments 
+            </nobr></h2> 
+        </form>
+    {% else %}
+        {% if isfriend %}
+            <h2> Comments </h2> 
+            <form method="post">
+                <div class="form-group">
+                    <label for="comment">Add comment</label>
+                    <textarea class="form-control" id="comment" placeholder="Enter Comment" rows="2" name="comment"> </textarea>
+                </div>
+                {% csrf_token %}
+
+                <button type="submit" class="btn btn-primary" name="Add comment"> Add comment </button>
+            </form>
+        {% else %}
+            <form method="post">
+                <h2><nobr>
+                    Comments 
+                    {% csrf_token %}
+                  {% comment %}  <button type="submit" class="btn btn-primary" name="Add Friend"> Add Friend </button> {% endcomment %}
+                </nobr></h2> 
+            </form>
+        {% endif %}
+    {% endif %}
+
+    <dl class="row">
+    {% for com in comments %}
+          <dt class="col-sm-1">{{com.username}}:</dt>
+            <dd class="col-sm-11">{{com.content}}</dd>
+    {% endfor %}
+    </dl>
+
+
+{% else %}
+    <h1> Please sign in to use this feature </h1>
+{% endif %}
+    
+{% endblock content %}

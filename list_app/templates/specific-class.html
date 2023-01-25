@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ class.subject }} {{ class.catalog_number }}: {{ class.description }} </h2>
+<p>
+{{ class.component }} | {{ class.units }} units <br>
+{{ class.days }} from {{ class.start_time }} to {{ class.end_time }} <br>
+</p>
+
+<p>
+<h3> Reviews for {{ class.subject }} {{ class.catalog_number }} </h3>
+Average Rating: {{ rating }} <br>
+
+<form action="{% url 'rateSpecificClass' class.course_number %}" method="get">
+     <button type="submit"> Rate This Class </button>
+</form>
+
+
+<p>
+{% if reviews %}
+    {% for r in reviews %}
+        <article class="media content-section">
+          <div class="media-body">
+            <b> Rating: {{ r.rating }} </b>
+              <ul>
+            <li class="article-content">Class: {{ r.whichClass }}</li>
+            <li class="article-content">Professor: {{ r.professor }}</li>
+             <li class="article-content">GPA: {{ r.GPA }}</li>
+
+            <li class="article-content">Thoughts: {{ r.thoughts }}</li>
+              </ul>
+          </div>
+        </article>
+    {% endfor %}
+{% else %}
+    <p>No reviews are available.</p>
+{% endif %}
+</p>
+
+{% endblock content %}

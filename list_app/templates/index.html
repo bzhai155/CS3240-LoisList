@@ -1,0 +1,24 @@
+{% load socialaccount %}
+<html>
+  <head>
+    <title>Google Authentication with Django</title>
+  </head>
+  <body>
+    <h2>How to Set Up Google Authentication with Django</h2>
+    {% if user.is_authenticated %}
+       <p>Welcome, {{ user.username }} !</p>
+       <a target="_black" href="admin">admin</a>
+       <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      {% if google_login %}
+         <a href="{% provider_login_url 'google' %}">Login with Google</a>
+      {% endif %}
+    {% endif %}
+    Avatar URL: {{ user.socialaccount_set.all.0.get_avatar_url }}
+    UID: {{ user.socialaccount_set.all.0.uid }}
+    Date Joined: {{ user.socialaccount_set.all.0.date_joined}}
+    Last Login: {{ user.socialaccount_set.all.0.last_login}}
+    Full Name: {{ user.socialaccount_set.all.0.extra_data.name }}
+  </body>
+  
+</html>

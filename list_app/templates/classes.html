@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block content %}
+{% if popup == 1 %}
+    <h4>
+        Invalid Class Addition: Time <Conflict></Conflict>
+    </h4>
+{% endif %}
+{% if popup == 2 %}
+    <h4>
+        Invalid Class Addition: Same Course, Different Section
+    </h4>
+{% endif %}
+{% if popup == 3 %}
+    <h4>
+        Invalid Class Addition: Course Already Added
+    </h4>
+{% endif %}
+
+<div class="accordion" id="classes">
+    {% for class in data %}
+    {% if class.subject != " " %}
+    <div class="accordion-item" style="width:100%">
+        <h2 class="accordion-header" id="h{{ class.course_number }}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#c{{ class.course_number }}" aria-expanded="false"
+                    aria-controls="c{{ class.course_number }}">
+                {{ class.subject }} {{ class.catalog_number }} {{ class.description }}
+            </button>
+        </h2>
+        <div id="c{{ class.course_number }}" class="accordion-collapse collapse"
+             aria-labelledby="h{{ class.course_number }}" data-bs-parent="#classes">
+            <div class="accordion-body">
+                {% for new in data %}
+                    {% if new.catalog_number == class.catalog_number %}
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th scope="row" style="width: 20%">{{ new.instructor.name }}</th>
+                                <td style="width: 20%">{{ new.instructor.email }}</td>
+                                    {% if user.is_authenticated %}
+                                    <td style="width: 20%">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary" name="class:{{new.course_number}}"> Add to Cart </button>
+                                        </form>
+                                    </td>
+                                    <td style="width: 20%">
+                                        <form method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary" name="Calender:{{new.course_number}}"> Add to Calendar </button>
+                                        </form>
+                                    </td>
+                                    <td style="width: 20%">
+                                        <a href="{% url 'specificClass' class.course_number %}"> 
+                                            <button type="submit" class="btn btn-primary" name="Rate"> Rate Class </button>
+                                        </a>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <tr>
+                                    <td scope="row" style="width:20%;font-size:15px">{{ new.days}} {{new.start_time}}-{{new.end_time}}</td>
+                                    <td style="width:20%;font-size:15px">{{ new.facility_description }}</td>
+                                    <td style="width:20%;font-size:15px">Enrollment: {{new.enrollment_total}} / {{ new.class_capacity }}</td>
+                                    <td style="width:10%;font-size:15px">Wait List: {{ new.wait_list }} / {{ new.wait_cap }}</td>
+                                    <td style="width:10%;font-size:15px">{{ new.units }} Units</td>
+                                    <td style="width:10%;font-size:15px">{{ new.course_section }}</td>
+                                    <td style="width:10%;font-size:15px">{{ new.course_number }}</td>
+                                </tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% empty %}
+    <div class="alert alert-danger" role="alert">
+    Department Not Found
+    {% endfor %}
+</div>
+
+{% comment %}
+
+<table class="table table-striped">
+{% for class in data %}
+
+{% if class.subject != " " %}
+  <thead>
+    <tr>
+
+      <th scope="row" style="width: 14%" >
+          <a href="{% url 'specificClass' class.course_number %}"> {{ class.subject }} {{ class.catalog_number }} </a>
+      </th>
+      <th colspan="3">{{ class.description }}</th>
+    </tr>
+  </thead>
+{% endif %}
+  <tbody>
+    <tr>
+      <th scope="row" style="width: 18%">{{ class.instructor.name }}</th>
+      <td style="width: 14.2%">{{ class.instructor.email }}</td>
+        {% if user.is_authenticated %}
+        <td style="width: 28%"><form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary" name="class:{{class.course_number}}"> Add to Cart </button>
+        </form></td>
+        <td style="width: 28%"><form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary" name="Calender:{{class.course_number}}"> Add to Calendar </button>
+        </form></td>
+    {% endif %}
+    </tr>
+    <tr>
+      <td scope="row" style="font-size:15px">{{ class.days}} {{class.start_time}}-{{class.end_time}}</td>
+      <td style="width:22%;font-size:15px">{{ class.facility_description }}</td>
+      <td style="font-size:15px">Enrollment: {{class.enrollment_total}} / {{ class.class_capacity }}</td>
+      <td style="font-size:15px">Wait List: {{ class.wait_list }} / {{ class.wait_cap }}</td>
+        <td style="width:18%;font-size:15px">{{ class.units }} Units</td>
+        <td style="font-size:15px">{{ class.course_section }}</td>
+        <td style="font-size:15px">{{ class.course_number }}</td>
+    </tr>
+  </tbody>
+
+{% endfor %}
+        </tbody>
+    </table>
+{% endcomment %}
+
+{% endblock content %}

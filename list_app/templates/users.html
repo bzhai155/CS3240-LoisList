@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<h1 class="display-1">User List</h1>
+<u2>
+{% for google_login in google_logins %}
+    <h4>
+     {{ google_login }}
+   <li> email: {{ google_login.Email }} </li>
+   <li> status: {{ google_login.Status }} </li>
+   <li> last logged in: {{ google_login.LastLogin }} </li>
+    </h4>
+{% endfor %}
+</u2>
+
+{% endblock content %}

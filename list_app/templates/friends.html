@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+{% if user.is_authenticated %}
+    <h1 class='text-center'> Friends </h1>
+    <ul class="list-inline">
+    {% for f in listfs %}
+
+      <li class="list-inline-item">
+            <a class="lead" href='/luthers/user/{{f.username}}'>
+                {{f.first_name}} {{f.last_name}}
+            </a>
+      </li>
+        <li class="list-inline-item">
+                <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary" name="removefriend:{{f.email}}">
+                Remove friend
+            </button>
+                </form>
+        </li>
+    {% endfor %}
+    </ul>
+
+
+
+    <h2 class='text-center'> Search up </h2>
+        <form method="post">
+            {% csrf_token %}
+            <input class="p-2 rounded-2 form-control" name="friendsearch" type="text" placeholder="Search by first or last name...">
+            <button type="submit" class="btn btn-primary" name="search">
+                Search
+            </button>
+        </form>
+        <ul class="list-inline">
+       <table class="table table-striped">
+            <tbody>
+        {% for i in listuser %}
+            <tr><td>
+                <a class="lead" href='/luthers/user/{{i.username}}'> {{i.first_name}} {{i.last_name}} </a>
+            </td></tr>
+        {% endfor %}
+	</tbody>
+	</table>
+        </ul>
+{% else %}
+    <h1> Please sign in to use this feature </h1>
+{% endif %}
+    
+{% endblock content %}

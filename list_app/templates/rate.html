@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+ <div class="container p-5">
+      <!--Django Model Form-->
+      <h2 class="text-primary">Rate {{ whichClass }}</h2>
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+             <label class="form-label">Rating</label>
+            <div class="col-lg-6 col-md-12">
+                {{ form.rating }}
+            </div>
+
+          <label class="form-label">Professor</label>
+          <div class="col-lg-6 col-md-12">
+              {{ form.professor }}
+          </div>
+
+          <label class="form-label">GPA</label>
+          <div class="col-lg-6 col-md-12">
+              {{ form.GPA }}
+          </div>
+
+          <label class="form-label">Thoughts</label>
+          <div class="col-lg-6 col-md-12">
+              {{ form.thoughts }}
+          </div>
+            <button class="btn btn-primary my-4" type="submit">Submit</button>
+      </form>
+    </div>
+
+{% endblock content %}

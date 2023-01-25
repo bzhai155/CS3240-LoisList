@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+<link rel="stylesheet" href="/static/list_app/calender.css">
+{% block content %}
+
+{% comment "add something ehre for nmo calss times" %}
+
+<a href="{{ request.get_full_path }}">Reload after clicking button to view new information</a>
+{% endcomment %}
+{% if user.is_authenticated %}
+<div class="container">
+                <div class="timetable-img text-center">
+                    <img src="img/content/timetable.png" alt="">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr class="bg-light-gray">
+                                <th class="text-uppercase">Monday</th>
+                                <th class="text-uppercase">Tuesday</th>
+                                <th class="text-uppercase">Wednesday</th>
+                                <th class="text-uppercase">Thursday</th>
+                                <th class="text-uppercase">Friday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              
+            <td>
+                {% for c in mond %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for c in tues %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for c in wend %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for c in thur %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+            <td>
+                {% for c in frid %}
+                    <p class="font-weight-bold"> {{c.subject}} {{c.catalog_number}} {{c.start_time}}-{{c.end_time}}</p>
+                {% endfor %}
+            </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+<div class="accordion" id="CalendarClass">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingCalendar">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClass" aria-expanded="true" aria-controls="collapseClass">
+        List of Classes on Calendar
+      </button>
+    </h2>
+    <div id="collapseClass" class="accordion-collapse collapse show" aria-labelledby="headingCalendar">
+        <div class="accordion-body">
+            <table class="table table-striped">
+                <tbody>
+		            {% for c in classes %}
+     		            <form method="post">
+			                <ul class="list-unstyled">
+     			                {% csrf_token %} 
+			                    <tr>
+                                    <td>
+     		                            {{c.subject}} {{c.catalog_number}} {{c.days}} {{c.start_time}} - {{c.end_time}}
+                                    </td>
+                                <td> 
+                                    <button type="submit" class="btn btn-primary" name="Remove:{{c.course_number}}"> Remove from Schedule </button> 
+                            </ul>
+    		            </form>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+    <h1> Please sign in to use this feature </h1>
+{% endif %}
+
+
+{% endblock content %}
